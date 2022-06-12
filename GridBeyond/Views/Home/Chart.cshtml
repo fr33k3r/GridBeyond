@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="elements">
+    Start: <input id="start" type="date" name="startDate" min="2017-01-01" max="2017-03-31" />
+    End: <input id="end" type="date" name="endDate" min="2017-01-01" max="2017-03-31" />
+    <button class="btn btn-primary" onclick="filterDate(document.getElementById('start').value,document.getElementById('end').value)">Filter Dates</button>
+    <button class="btn btn-danger" onclick="resetDate()">Reset Dates</button>    
+    <hr />
+</div>
+<div><canvas id="chartCanvas"></canvas></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+        integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+<script>
+    $(document).ready(function() {
+        resetDate();
+    });
+</script>
+<script>
+    var ctx_live = document.getElementById("chartCanvas");
+    var myChart = new Chart(ctx_live, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                data: [],
+                borderWidth: 1,
+                borderColor: '#00c0ef',
+                label: 'Stocks Line Chart',
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Stocks Line Chart',
+            },
+            legend: {
+                display: false
+            }
+        }
+    });
+
+    function filterDate(start, end) {
+        // Initialization
+
+        val1 = start.toString();
+        val2 = end.toString();
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Chart")",
+            data: { start: val1, end: val2 },
+            dataType: "json",
+            success: function(response) {
+                var newChart = response;
+                console.log(newChart.value.data.datasets[0].data);
+                console.log(newChart.value.data.labels);
+
+                $("#lineChart").remove();
+                $("div.elements").append('<canvas id="lineChart" class="animated fadeIn"></canvas>');
+
+                myChart.data.labels = newChart.value.data.labels;
+                myChart.data.datasets[0].data = newChart.value.data.datasets[0].data;
+
+                // re-render the chart
+                myChart.update();
+
+
+            },
+            error: function(req, status, error) {
+                alert("There was an error" + error)
+            }
+        });
+    };
+
+    function resetDate() {
+        // Initialization
+        var val1 = $.datepicker.formatDate('yy-mm-dd', new Date(2000, 1, 1, 0));
+        var val2 = $.datepicker.formatDate('yy-mm-dd', new Date());
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Chart")",
+            data: { start: val1, end: val2 },
+            dataType: "json",
+            success: function(response) {
+                var newChart = response;
+                console.log(newChart.value.data.datasets[0].data);
+                console.log(newChart.value.data.labels);
+
+                $("#lineChart").remove();
+                $("div.elements").append('<canvas id="lineChart" class="animated fadeIn"></canvas>');
+
+                myChart.data.labels = newChart.value.data.labels;
+                myChart.data.datasets[0].data = newChart.value.data.datasets[0].data;
+
+                // re-render the chart
+                myChart.update();
+
+
+            },
+            error: function(req, status, error) {
+                alert("There was an error" + error)
+            }
+        });
+
+    };
+
+</script>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32414.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GridBeyond", "GridBeyond\GridBeyond.csproj", "{70A1ABF7-F45F-4B2E-B784-210C56915C12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridBeyondTest", "GridBeyondTest\GridBeyondTest.csproj", "{3CEB0350-E72F-4498-8375-3A28313B5240}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70A1ABF7-F45F-4B2E-B784-210C56915C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70A1ABF7-F45F-4B2E-B784-210C56915C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70A1ABF7-F45F-4B2E-B784-210C56915C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70A1ABF7-F45F-4B2E-B784-210C56915C12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CEB0350-E72F-4498-8375-3A28313B5240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CEB0350-E72F-4498-8375-3A28313B5240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CEB0350-E72F-4498-8375-3A28313B5240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CEB0350-E72F-4498-8375-3A28313B5240}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B13E7E4B-772D-42F8-AFDF-44067DD80AB2}
+	EndGlobalSection
+EndGlobal
