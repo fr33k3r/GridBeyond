@@ -1,77 +1,96 @@
-﻿@model List<Stock>
-
-@{
+﻿@{
     ViewBag.Title = "Stock Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (Model != null)
-{
-    <div class="table-responsive">
-        <table id="aggregate" class="table table-primary table-sm table-bordered text-center" style="margin:auto; width:75%;">
-            <thead>
-                <tr>
-                    <th>Max Market Price</th>
-                    <th>Min Market Price</th>
-                    <th>Average Market Price</th>
-                    <th>Most expensive hour window</th>
-                </tr>
-            </thead>
-            <tbody> 
-                @{ GridBeyond.Models.StockAggregates aggregates = (GridBeyond.Models.StockAggregates)ViewData["aggregates"]; }
-                <tr>
-                    <td>@aggregates.Max</td>
-                    <td>@aggregates.Min</td>
-                    <td>@aggregates.Average</td>
-                    <td>@aggregates.MaxExpensive</td>
-                </tr>                
-            </tbody>
-        </table>
-        <hr>
-        <table id="stocks" class="table table-sm table-bordered" style="width:100%;">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Market Price EX1</th>                
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var stock in Model)
-                {
-                    <tr>
-                        <td>@stock.Date.ToLocalTime()</td>
-                        <td>@stock.MarketPrice</td>                        
-                    </tr>
-                }
-            </tbody>
-        </table>        
-    </div>    
-}
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>  
+<table id="aggregate" class="table table-primary table-sm table-bordered text-center" style="margin:auto; width:75%;">
+    <thead>
+        <tr>
+            <th>Max Market Price</th>
+            <th>Min Market Price</th>
+            <th>Average Market Price</th>
+            <th>Most expensive hour window</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            GridBeyond.Models.StockAggregates aggregates = (GridBeyond.Models.StockAggregates)ViewData["aggregates"];
+        }
+        <tr>
+            <td>@aggregates.Max</td>
+            <td>@aggregates.Min</td>
+            <td>@aggregates.Average</td>
+            <td>@aggregates.MaxExpensive</td>
+        </tr>
+    </tbody>
+</table>
+<hr>
 
-    <script>
-        $(document).ready(function() {
-            $('#stocks thead tr')
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-bordered table-striped" id="stocksTable">
+            <thead>
+                <tr>
+                    <th scope="col" >Date</th>
+                    <th scope="col">Market Price Ex1</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.24/dataRender/datetime.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#stocksTable thead tr')
                 .clone(true)
                 .addClass('filters')
-                .appendTo('#stocks thead');
+                .appendTo('#stocksTable thead');
+        bindDatatable();
+    });
 
-            $('#stocks').DataTable({
-                columnDefs: [
-                    { 
-                        type: 'date', 
-                        'targets': [0],
-                        "sortable": false
+    function bindDatatable() {
+        datatable = $('#stocksTable')
+
+            .DataTable({
+                "sAjaxSource": "/Home/GetData",
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSearchable": true,
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                "columns": [
+                    {
+                        data: "date",
+                        "autoWidth": true,
+                        "searchable": true
                     },
                     {
-                        'targets': [1],
-                        "sortable": false
-                    }
+                        data: "marketPrice",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        render: DataTable.render.date("DD-MM-YYYY hh:mm:ss a"),
+                    },
+                ],
 
-                ], 
-                order: [[0, "asc"]],                
-                orderCellsTop: true,
-                fixedHeader: true,
                 initComplete: function() {
                     var api = this.api();
                     // For each column
@@ -120,7 +139,9 @@
                                 });
                         });
                 },
+
+
             });
 
-        });
-    </script>
+    }
+</script>

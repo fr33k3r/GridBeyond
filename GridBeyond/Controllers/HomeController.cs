@@ -60,6 +60,111 @@ namespace GridBeyond.Controllers
             }
         }
 
+        public IActionResult TableServerSide()
+        {
+            try
+            {
+                List<Stock> stocks = _stockService.ReadCSV();
+                StockAggregates stockAggregates = new()
+                {
+                    Min = _stockService.GetMin(stocks),
+                    Max = _stockService.GetMax(stocks),
+                    Average = _stockService.GetAverage(stocks),
+                    MaxExpensive = _stockService.GetMaxExpensive(stocks)
+                };
+
+                ViewData["aggregates"] = stockAggregates;
+
+                return View();
+            }
+            catch (IOException ioex)
+            {
+                string message = ioex.Message;
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMsg = message
+                };
+
+                return View("Error", errorViewModel);
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMsg = message
+                };
+
+                return View("Error", errorViewModel);
+            }            
+        }
+
+
+        public IActionResult GetData(JqueryDatatableParam param)
+        {
+            try
+            {
+                List<Stock> stocks = _stockService.ReadCSV();
+                StockAggregates stockAggregates = new()
+                {
+                    Min = _stockService.GetMin(stocks),
+                    Max = _stockService.GetMax(stocks),
+                    Average = _stockService.GetAverage(stocks),
+                    MaxExpensive = _stockService.GetMaxExpensive(stocks)
+                };
+
+                ViewData["aggregates"] = stockAggregates;
+
+                if (!string.IsNullOrEmpty(param.sSearch))
+                {
+                    stocks = stocks.Where(x => x.Date.ToString().Contains(param.sSearch) || x.MarketPrice.ToString().Contains(param.sSearch)).ToList();
+                }
+
+                var sortColumnIndex = Convert.ToInt32(HttpContext.Request.Query["iSortCol_0"]);
+                var sortDirection = HttpContext.Request.Query["sSortDir_0"];
+                if (sortColumnIndex == 0)
+                {
+                    stocks = sortDirection == "asc" ? stocks.OrderBy(c => c.Date).ToList() : stocks.OrderByDescending(c => c.Date).ToList();
+                }
+                else if (sortColumnIndex == 1)
+                {
+                    stocks = sortDirection == "asc" ? stocks.OrderBy(c => c.MarketPrice).ToList() : stocks.OrderByDescending(c => c.MarketPrice).ToList();
+                }
+
+                var displayResult = stocks.Skip(param.iDisplayStart)
+               .Take(param.iDisplayLength).ToList();
+                var totalRecords = stocks.Count;
+
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = totalRecords,
+                    iTotalDisplayRecords = totalRecords,
+                    aaData = displayResult
+                });
+            }
+            catch (IOException ioex)
+            {
+                string message = ioex.Message;
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMsg = message
+                };
+
+                return View("Error", errorViewModel);
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMsg = message
+                };
+
+                return View("Error", errorViewModel);
+            }
+        }
+
         public IActionResult Chart()
         {
             

@@ -70,6 +70,12 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
+tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
 thead input {
     width: 100%;
 }
@@ -81,28 +87,29 @@ thead input {
 
 #elements {
     margin: auto;
-    width: 60%;
+    width: 75%;
 }
 
-input[type="date"] {
+input[type="datetime-local"] {
     background: white;
-    color: blue;
+    color: blue;    
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     filter: invert(50%);
 }
 
-input[type="date"] {
+input[type="datetime-local"] {
     -webkit-align-items: center;
     display: -webkit-inline-flex;
     font-family: monospace;
     overflow: hidden;
-    padding: 0;
+    padding: 4px;
+    margin-right: 10px;
     -webkit-padding-start: 1px;
 }
 
-input::-webkit-datetime-edit {
+input::-webkit-color-datetime-edit {
     -webkit-flex: 1;
     -webkit-user-modify: read-only !important;
     display: inline-block;
@@ -110,12 +117,6 @@ input::-webkit-datetime-edit {
     overflow: hidden;
 }
 
-input::-webkit-datetime-edit-fields-wrapper {
-    -webkit-user-modify: read-only !important;
-    display: inline-block;
-    padding: 1px 0;
-    white-space: pre;
-}
 
 
 

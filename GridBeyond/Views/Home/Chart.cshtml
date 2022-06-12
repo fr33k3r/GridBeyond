@@ -4,11 +4,14 @@
 }
 
 <div id="elements">
-    Start: <input id="start" type="date" name="startDate" min="2017-01-01" max="2017-03-31" />
-    End: <input id="end" type="date" name="endDate" min="2017-01-01" max="2017-03-31" />
+
+    Start: <input id="start" type="datetime-local" name="startDate" @*min="2017-01-01" max="2017-03-31"*@ />
+    End: <input id="end" type="datetime-local" name="endDate" @* min="2017-01-01" max="2017-03-31"*@ />
     <button class="btn btn-primary" onclick="filterDate(document.getElementById('start').value,document.getElementById('end').value)">Filter Dates</button>
-    <button class="btn btn-danger" onclick="resetDate()">Reset Dates</button>    
+    <button class="btn btn-danger" onclick="resetDate()">Reset Dates</button>
+
     <hr />
+
 </div>
 <div><canvas id="chartCanvas"></canvas></div>
 
@@ -20,7 +23,7 @@
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function() {        
         resetDate();
     });
 </script>
