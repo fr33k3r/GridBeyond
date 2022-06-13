@@ -22,7 +22,11 @@ namespace GridBeyond.Controllers
             _stockService = stockService;
         }
 
-        public IActionResult TableClientSide()
+        public IActionResult Index()
+        {
+            return View();
+        }
+            public IActionResult TableClientSide()
         {   try
             {
                 List<Stock> stocks = _stockService.ReadCSV();

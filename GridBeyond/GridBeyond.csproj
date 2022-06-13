@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\img\chartjs.svg" />
     <None Include="wwwroot\img\logo.jpg" />
 	<None Include="wwwroot\data\sample.csv" />
   </ItemGroup>

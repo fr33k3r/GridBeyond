@@ -144,6 +144,17 @@ input::-webkit-color-datetime-edit {
     overflow: hidden;
 }
 
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 55%;
+}
+
+div.center img {
+    margin-top: 50px;
+    padding: 10px;
+}
 
 
 
