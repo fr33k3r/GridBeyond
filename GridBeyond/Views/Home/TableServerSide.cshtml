@@ -3,27 +3,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table id="aggregate" class="table table-primary table-sm table-bordered text-center" style="margin:auto; width:75%;">
-    <thead>
-        <tr>
-            <th>Max Market Price</th>
-            <th>Min Market Price</th>
-            <th>Average Market Price</th>
-            <th>Most expensive hour window</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            GridBeyond.Models.StockAggregates aggregates = (GridBeyond.Models.StockAggregates)ViewData["aggregates"];
-        }
-        <tr>
-            <td>@aggregates.Max</td>
-            <td>@aggregates.Min</td>
-            <td>@aggregates.Average</td>
-            <td>@aggregates.MaxExpensive</td>
-        </tr>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-sm-12">
+        <table id="aggregate" class="table table-primary table-sm table-bordered text-center" style="margin:auto; width:75%;">
+            <thead>
+                <tr>
+                    <th>Max Market Price</th>
+                    <th>Min Market Price</th>
+                    <th>Average Market Price</th>
+                    <th>Most expensive hour window</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    GridBeyond.Models.StockAggregates aggregates = (GridBeyond.Models.StockAggregates)ViewData["aggregates"];
+                }
+                <tr>
+                    <td>@aggregates.Max</td>
+                    <td>@aggregates.Min</td>
+                    <td>@aggregates.Average</td>
+                    <td>@aggregates.MaxExpensive</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 <hr>
 
 <div class="row">
