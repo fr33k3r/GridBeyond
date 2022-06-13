@@ -11,10 +11,10 @@ namespace GridBeyond.Services
     {
         public List<Stock> ReadCSV()
         {
-            using var streamReader = new StreamReader(@"C:\Temp\sample.csv");
-            
+            using var streamReader = new StreamReader("wwwroot/data/sample.csv");
+
             using var csvReader = new CsvReader(streamReader, CultureInfo.GetCultureInfo("el-GR"));            
-            var records = csvReader.GetRecords<Stock>().ToList();            
+            var records = csvReader.GetRecords<Stock>().ToList();
             return records;
         }
 
