@@ -16,6 +16,76 @@ namespace GridBeyondTest
         [Test]
         public void MaxExpensive_Is_Calculated_Correctly()
         {            
+            List<Stock> s = CreateSampleList();
+
+            double? expectedResult = 105;
+
+            mockStockService = new Mock<IStockService>(MockBehavior.Strict);
+            mockStockService.Setup(p => p.ReadCSV()).Returns(s);
+            mockStockService.Setup(p => p.GetMaxExpensive(s)).Returns(expectedResult);
+
+            systemUnderTest = mockStockService.Object;
+            var result = systemUnderTest.GetMaxExpensive(s);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [Test]
+        public void Max_Is_Calculated_Correctly()
+        {
+            List<Stock> s = CreateSampleList();            
+
+            double? expectedResult = 55.0;
+
+
+            mockStockService = new Mock<IStockService>(MockBehavior.Strict);
+            mockStockService.Setup(p => p.ReadCSV()).Returns(s);
+            mockStockService.Setup(p => p.GetMax(s)).Returns(expectedResult);
+
+            systemUnderTest = mockStockService.Object;
+            var result = systemUnderTest.GetMax(s);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [Test]
+        public void Min_Is_Calculated_Correctly()
+        {
+            List<Stock> s = CreateSampleList();
+
+            double? expectedResult = 42.4;
+
+
+            mockStockService = new Mock<IStockService>(MockBehavior.Strict);
+            mockStockService.Setup(p => p.ReadCSV()).Returns(s);
+            mockStockService.Setup(p => p.GetMin(s)).Returns(expectedResult);
+
+            systemUnderTest = mockStockService.Object;
+            var result = systemUnderTest.GetMin(s);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [Test]
+        public void Average_Is_Calculated_Correctly()
+        {
+            List<Stock> s = CreateSampleList();
+
+            double? expectedResult = 48.16;
+
+
+            mockStockService = new Mock<IStockService>(MockBehavior.Strict);
+            mockStockService.Setup(p => p.ReadCSV()).Returns(s);
+            mockStockService.Setup(p => p.GetAverage(s)).Returns(expectedResult);
+
+            systemUnderTest = mockStockService.Object;
+            var result = systemUnderTest.GetAverage(s);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        List<Stock> CreateSampleList()
+        {
             List<Stock> s = new List<Stock>();
 
             s.Add(new Stock
@@ -44,17 +114,7 @@ namespace GridBeyondTest
                 MarketPrice = 42.4
             });
 
-            double? expectedResult = 105;
-
-
-            mockStockService = new Mock<IStockService>(MockBehavior.Strict);
-            mockStockService.Setup(p => p.ReadCSV()).Returns(s);
-            mockStockService.Setup(p => p.GetMaxExpensive(s)).Returns(expectedResult);
-
-            systemUnderTest = mockStockService.Object;
-            var result = systemUnderTest.GetMaxExpensive(s);
-
-            Assert.AreEqual(expectedResult, result);
+            return s;
         }
-    }
+    }    
 }
