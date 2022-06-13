@@ -31,16 +31,10 @@
         <table class="table table-bordered table-striped" id="stocksTable">
             <thead>
                 <tr>
-                    <th scope="col" >Date</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Market Price Ex1</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>
@@ -52,10 +46,6 @@
 
 <script>
     $(document).ready(function() {
-        $('#stocksTable thead tr')
-                .clone(true)
-                .addClass('filters')
-                .appendTo('#stocksTable thead');
         bindDatatable();
     });
 
@@ -90,57 +80,6 @@
                         render: DataTable.render.date("DD-MM-YYYY hh:mm:ss a"),
                     },
                 ],
-
-                initComplete: function() {
-                    var api = this.api();
-                    // For each column
-                    api
-                        .columns()
-                        .eq(0)
-                        .each(function(colIdx) {
-                            // Set the header cell to contain the input element
-                            var cell = $('.filters th').eq(
-                                $(api.column(colIdx).header()).index()
-                            );
-                            var title = $(cell).text();
-                            $(cell).html('<input type="text" placeholder="' + title + '" />');
-
-                            // On every keypress in this input
-                            $(
-                                'input',
-                                $('.filters th').eq($(api.column(colIdx).header()).index())
-                            )
-                                .off('keyup change')
-                                .on('change', function(e) {
-                                    // Get the search value
-                                    $(this).attr('title', $(this).val());
-                                    var regexr = '({search})'; //$(this).parents('th').find('select').val();
-
-                                    var cursorPosition = this.selectionStart;
-                                    // Search the column for that value
-                                    api
-                                        .column(colIdx)
-                                        .search(
-                                            this.value != ''
-                                                ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                                : '',
-                                            this.value != '',
-                                            this.value == ''
-                                        )
-                                        .draw();
-                                })
-                                .on('keyup', function(e) {
-                                    e.stopPropagation();
-
-                                    $(this).trigger('change');
-                                    $(this)
-                                        .focus()[0]
-                                        .setSelectionRange(cursorPosition, cursorPosition);
-                                });
-                        });
-                },
-
-
             });
 
     }
